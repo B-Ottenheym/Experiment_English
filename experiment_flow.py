@@ -260,4 +260,3 @@ def run_experiment():
         step_3_scenario()
     else:
         step_4_redirect()
-``
