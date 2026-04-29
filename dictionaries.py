@@ -1532,7 +1532,7 @@ EXPERIMENT_SCENARIO_PRESET = {
 }
 
 SUPPORTED_LANGUAGES = ["nl", "en"]
-DEFAULT_LANGUAGE = "nl"
+DEFAULT_LANGUAGE = "en"
 
 var_labels_english = {
     "planned_project_duration_days": "Planned project duration (days)",
