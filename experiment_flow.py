@@ -745,7 +745,7 @@ def run_experiment():
     step = st.session_state.exp_step
     if step == 0:
         step_0_language()
-    if step == 1:
+    elif step == 1:
         step_1_consent()
     elif step == 2:
         step_2_assignment()
