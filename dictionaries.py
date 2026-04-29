@@ -1530,3 +1530,620 @@ EXPERIMENT_SCENARIO_PRESET = {
     "site_logistics_complexity": "Hoog"
 
 }
+
+SUPPORTED_LANGUAGES = ["nl", "en"]
+DEFAULT_LANGUAGE = "nl"
+
+var_labels_english = {
+    "planned_project_duration_days": "Planned project duration (days)",
+    "is_delayed": "Delayed",
+    "delay_pct": "Delay (%)",
+    "delay_days": "Delay (days)",
+
+    "schedule_level_of_detail_avg_activity_days": "Schedule level of detail",
+    "project_controls_plan_in_place": "Project controls plan in place",
+    "roles_responsibilities_defined_raci": "Roles/responsibilities defined (RACI)",
+    "site_logistics_plan_completed": "Site logistics plan completed",
+    "quality_management_plan_in_place_qmp": "Quality management plan in place",
+    "design_schedule_baseline_approved": "Design schedule baseline approved",
+    "percentage_design_complete_at_award_pct": "Percentage design complete at award",
+    "outstanding_design_packages_at_execution_start_count": "Outstanding design packages at execution start",
+    "meeting_frequency_meetings_per_month_count": "Meeting frequency",
+    "information_management": "Information management (ISO 19650)",
+    "number_of_key_stakeholders_count": "Number of key stakeholders",
+    "cost_estimate_class_aace_1_5": "Cost estimate class",
+    "cost_contingency_included_pct": "Cost contingency included",
+    "benchmarking_against_similar_projects_performed": "Benchmarking against similar projects performed",
+
+    "clash_detection_performed_if_bim": "Clash detection performed",
+    "lead_designer_experience_years": "Lead designer experience",
+    "similar_projects_designed_count": "Similar projects designed",
+    "design_team_size_fte": "Design team size",
+    "bim_capability": "BIM capability",
+    "approval_layers_count": "Approval layers",
+    "approval_responsibility_allocation": "Approval responsibility allocation",
+
+    "scope_definition_completeness_pct": "Scope definition completeness",
+    "provisional_sums_pct_contract_value": "Provisional sums",
+    "change_control_procedure_defined": "Change control procedure defined",
+    "owner_involvement": "Owner involvement",
+    "change_initiation_rights": "Change initiation rights",
+
+    "contractual_payment_terms_days": "Contractual payment terms",
+    "payment_security_instrument_included": "Payment security instrument included",
+    "owner_financial_reliability": "Owner financial reliability",
+    "contractual_decision_time_days": "Contractual decision time",
+    "escalation_path_defined": "Escalation path defined",
+    "ongoing_legal_disputes": "Ongoing legal disputes",
+    "project_parties_prior_collaboration": "Project parties prior collaboration",
+
+    "contract_type": "Contract type",
+    "collaborative_contracting_bouwteam": "Collaborative contracting / Bouwteam",
+    "incentive_mechanisms_included": "Incentive mechanisms included",
+    "deviations_from_standard_terms": "Deviations from standard terms",
+    "inflation_forecast_pct": "Inflation forecast",
+    "price_escalation_clauses_included": "Price escalation clauses included",
+    "pricing_mechanism": "Pricing mechanism",
+    "contract_value_subject_to_indexation_pct": "Percentage contract value subject to indexation",
+
+    "financial_prequalification_score_0_100": "Financial prequalification score",
+    "contract_value_vs_annual_turnover_pct": "Contract value vs annual turnover",
+    "proof_of_financing_submitted": "Proof of financing submitted",
+    "contractor_experience_years": "Contractor experience",
+    "similar_projects_completed_count": "Similar projects completed",
+    "technical_tender_score_0_100": "Technical tender score",
+    "method_statement_completeness": "Method statement completeness",
+    "share_first_time_methods_pct": "Share of work using first-time methods",
+    "subcontracting_share_pct": "Subcontracting share",
+    "number_of_subcontractors_count": "Number of subcontractors",
+    "critical_package_subcontractor_awarded_pre_start_pct": "Critical package subcontractor awarded pre-start",
+
+    "imported_material_dependency_pct": "Imported material dependency",
+    "critical_materials_identified_count": "Critical materials identified",
+    "critical_materials_lead_time_gt_8_weeks_count": "Critical materials with lead time > 8 weeks",
+    "single_source_critical_materials_count": "Single-source critical materials",
+    "planned_procurement_lead_time_days": "Planned procurement lead time",
+    "critical_materials_ordered_pre_start_pct": "Critical materials ordered pre-start",
+    "supplier_reliability_pct_on_time_deliveries": "Supplier reliability",
+    "supplier_iso_9001_certified": "Supplier ISO 9001 certified",
+    "equipment_availability_confirmed_pct_critical_equipment": "Equipment availability confirmed",
+    "equipment_ownership": "Equipment ownership",
+    "avg_equipment_age_years": "Average equipment age",
+    "avg_operator_experience_years": "Average operator experience",
+
+    "labour_availability_pct_planned_available_vs_required": "Labour availability",
+    "dependency_on_scarce_trades_pct": "Dependency on scarce trades",
+    "use_of_agency_temporary_labour_pct": "Use of agency or temporary labour",
+    "critical_trades_confirmed_pct": "Critical trades confirmed",
+    "overtime_shift_work_planned": "Overtime or shift work planned",
+    "site_logistics_complexity": "Site logistics complexity",
+    "share_of_certified_workers_pct": "Share of certified workers",
+    "planned_onboarding_training_days": "Planned onboarding or training days",
+    "avg_experience_of_workforce_years": "Average workforce experience",
+
+    "land_acquisition_right_of_way_resolved": "Land acquisition and right-of-way resolved",
+    "unresolved_utilities_present": "Unresolved utilities present",
+    "unresolved_site_access_constraints": "Unresolved site access constraints",
+    "permits_required_count": "Permits required",
+    "permits_obtained_at_start_pct": "Permits obtained at start",
+    "authority_involvement_level": "Authority involvement level",
+    "permit_planned_lead_time_days": "Permit planned lead time",
+    "historical_weather_affected_days": "Location historical weather-affected days",
+    "weather_contingency_included": "Weather contingency included",
+    "weather_sensitive_activities_share_pct": "Weather-sensitive activities share",
+    "geotechnical_investigation_completed": "Geotechnical investigation completed",
+    "approvals_pending_count": "Approvals pending",
+    "compliance_deliverables_required_count": "Compliance deliverables required",
+    "urban_context": "Urban context",
+    "external_stakeholders_count": "External stakeholders",
+    "outstanding_stakeholder_objections_count": "Outstanding stakeholder objections",
+    "traffic_management_plan": "Traffic management plan",
+    "stakeholder_engagement_plan_in_place": "Stakeholder engagement plan in place",
+
+    "inspection_test_plan_defined_itp": "Inspection and test plan defined (ITP)",
+    "complexity_of_construction_scope_major_packages_wbs_count": "Complexity of construction scope",
+    "contractor_safety_record_trir": "Contractor safety record",
+    "safety_management_plan_in_place": "Safety management plan in place",
+    "safety_certification_requirement": "Safety certification requirement (VCA)",
+    "high_risk_activities_identified_count": "High-risk activities identified",
+    "safety_training_hours_required": "Safety training hours required"
+}
+
+var_descriptions_english = {
+    "schedule_level_of_detail_avg_activity_days":
+        "Average planned activity duration in the baseline schedule, used as a proxy for schedule granularity.",
+
+    "project_controls_plan_in_place":
+        "Indicates whether a documented project controls plan defining monitoring, reporting, and control procedures exists prior to execution.",
+
+    "roles_responsibilities_defined_raci":
+        "Indicates whether a formal responsibility allocation matrix (RACI) defining roles and decision rights exists prior to execution.",
+
+    "site_logistics_plan_completed":
+        "Indicates whether a documented site logistics plan has been completed prior to execution.",
+
+    "quality_management_plan_in_place_qmp":
+        "Indicates whether a formal quality management plan has been established prior to execution.",
+
+    "scope_definition_completeness_pct":
+        "Percentage of work breakdown structure (WBS) items for which scope, quantities, and specifications are defined at execution start.",
+
+    "provisional_sums_pct_contract_value":
+        "Share of total contract value allocated to provisional sums, expressed as a percentage.",
+
+    "change_control_procedure_defined":
+        "Indicates whether a formal procedure for identifying, evaluating, and approving scope changes is defined prior to execution.",
+
+    "approval_layers_count":
+        "Number of formal approval steps required for design documents, shop drawings, or changes.",
+
+    "approval_responsibility_allocation":
+        "Party contractually responsible for approvals, categorised as owner, consultant, or joint responsibility.",
+
+    "clash_detection_performed_if_bim":
+        "Indicates whether clash detection or model coordination has been performed prior to execution (if BIM is applied).",
+
+    "design_schedule_baseline_approved":
+        "Indicates whether a baseline schedule for design deliverables has been formally approved prior to execution.",
+
+    "percentage_design_complete_at_award_pct":
+        "Percentage of total design scope completed at the time of contract award.",
+
+    "outstanding_design_packages_at_execution_start_count":
+        "Number of design packages that are not completed at execution start.",
+
+    "lead_designer_experience_years":
+        "Number of years of relevant professional experience of the lead designer assigned to the project.",
+
+    "similar_projects_designed_count":
+        "Number of comparable projects previously designed by the design team.",
+
+    "design_team_size_fte":
+        "Number of full-time equivalent (FTE) designers assigned to the project at execution start.",
+
+    "bim_capability":
+        "Indicates whether the design team has in-house BIM capability for coordination and model-based design.",
+
+    "financial_prequalification_score_0_100":
+        "Score reflecting contractor financial capacity based on formal prequalification procedures.",
+
+    "contract_value_vs_annual_turnover_pct":
+        "Ratio of contract value to contractor annual turnover, expressed as a percentage.",
+
+    "proof_of_financing_submitted":
+        "Indicates whether formal proof of secured financing has been submitted prior to execution.",
+
+    "contractual_payment_terms_days":
+        "Number of calendar days between invoicing and contractual payment deadline.",
+
+    "payment_security_instrument_included":
+        "Indicates whether payment security instruments (e.g. guarantees) are included in the contract.",
+
+    "owner_financial_reliability":
+        "Categorisation of the owner’s financial reliability as low, medium, or high based on organisational characteristics (e.g. public vs private client).",
+
+    "contractual_decision_time_days":
+        "Maximum number of calendar days contractually allowed for decision-making.",
+
+    "escalation_path_defined":
+        "Indicates whether a formal escalation mechanism for unresolved decisions is defined.",
+
+    "owner_involvement":
+        "Categorisation of the expected level of owner involvement during execution as low, medium, or high.",
+
+    "change_initiation_rights":
+        "Allocation of rights to initiate changes, categorised as owner, joint, or contractor.",
+
+    "land_acquisition_right_of_way_resolved":
+        "Indicates whether land acquisition and right-of-way issues are resolved prior to execution.",
+
+    "unresolved_utilities_present":
+        "Indicates whether unresolved utility relocations remain at execution start.",
+
+    "unresolved_site_access_constraints":
+        "Indicates whether unresolved site access constraints remain at execution start.",
+
+    "contractor_experience_years":
+        "Number of years of relevant professional experience of the main contractor.",
+
+    "similar_projects_completed_count":
+        "Number of comparable projects previously completed by the contractor.",
+
+    "technical_tender_score_0_100":
+        "Score reflecting the technical quality of the contractor’s tender submission.",
+
+    "method_statement_completeness":
+        "Percentage of construction activities for which approved method statements are available at execution start.",
+
+    "share_first_time_methods_pct":
+        "Percentage of project scope planned to be executed using methods not previously applied by the contractor.",
+
+    "subcontracting_share_pct":
+        "Percentage of total project scope subcontracted to third parties.",
+
+    "number_of_subcontractors_count":
+        "Total number of subcontractors engaged on the project.",
+
+    "critical_package_subcontractor_awarded_pre_start_pct":
+        "Percentage of critical subcontract packages awarded prior to execution start.",
+
+    "inspection_test_plan_defined_itp":
+        "Indicates whether a formal inspection and test plan has been defined prior to execution.",
+
+    "complexity_of_construction_scope_major_packages_wbs_count":
+        "Number of major construction packages or high-level WBS elements forming the execution scope.",
+
+    "meeting_frequency_meetings_per_month_count":
+        "Number of formal coordination meetings planned per month during execution.",
+
+    "information_management":
+        "Indicates whether information management is carried out in accordance with ISO 19650.",
+
+    "number_of_key_stakeholders_count":
+        "Number of internal and external stakeholders involved in project execution.",
+
+    "imported_material_dependency_pct":
+        "Percentage of critical materials sourced internationally.",
+
+    "critical_materials_identified_count":
+        "Number of materials classified as critical for project execution.",
+
+    "critical_materials_lead_time_gt_8_weeks_count":
+        "Number of critical materials with planned lead times exceeding eight weeks.",
+
+    "single_source_critical_materials_count":
+        "Number of critical materials sourced from a single supplier.",
+
+    "planned_procurement_lead_time_days":
+        "Planned time between ordering and delivery of critical materials, expressed in days.",
+
+    "critical_materials_ordered_pre_start_pct":
+        "Percentage of critical materials ordered prior to execution start.",
+
+    "supplier_reliability_pct_on_time_deliveries":
+        "Percentage of historical deliveries completed on time by selected suppliers.",
+
+    "supplier_iso_9001_certified":
+        "Indicates whether suppliers of critical materials hold ISO 9001 certification.",
+
+    "equipment_availability_confirmed_pct_critical_equipment":
+        "Percentage of required critical equipment confirmed to be available at execution start.",
+
+    "equipment_ownership":
+        "Ownership structure of critical equipment, categorised as owned, rented, or mixed.",
+
+    "avg_equipment_age_years":
+        "Average age of critical equipment in years.",
+
+    "avg_operator_experience_years":
+        "Average number of years of experience of equipment operators assigned to the project.",
+
+    "labour_availability_pct_planned_available_vs_required":
+        "Percentage of planned labour resources available relative to required labour resources.",
+
+    "dependency_on_scarce_trades_pct":
+        "Percentage of total labour hours associated with trades considered scarce in the relevant labour market.",
+
+    "use_of_agency_temporary_labour_pct":
+        "Percentage of total labour hours planned to be supplied by agency or temporary labour.",
+
+    "critical_trades_confirmed_pct":
+        "Percentage of critical trades contractually confirmed prior to execution start.",
+
+    "overtime_shift_work_planned":
+        "Indicates whether overtime or shift work is planned during execution.",
+
+    "site_logistics_complexity":
+        "Categorisation of site logistics complexity as low, medium, or high based on access, space, and operational constraints.",
+
+    "share_of_certified_workers_pct":
+        "Percentage of workforce holding required professional or safety certifications.",
+
+    "planned_onboarding_training_days":
+        "Number of days allocated to onboarding or training activities prior to or during execution.",
+
+    "avg_experience_of_workforce_years":
+        "Average number of years of relevant experience of the project workforce.",
+
+    "contract_type":
+        "Primary contractual form governing the project (e.g. UAV 2012, UAV-GC 2025, other).",
+
+    "collaborative_contracting_bouwteam":
+        "Indicates whether a collaborative contracting approach or Bouwteam arrangement is applied.",
+
+    "incentive_mechanisms_included":
+        "Indicates whether contractual incentive mechanisms are included.",
+
+    "deviations_from_standard_terms":
+        "Number of deviations from standard contractual terms included in the contract.",
+
+    "ongoing_legal_disputes":
+        "Indicates whether ongoing legal disputes between project parties exist at execution start.",
+
+    "project_parties_prior_collaboration":
+        "Indicates whether key project parties have collaborated on previous projects.",
+
+    "permits_required_count":
+        "Number of permits required for project execution.",
+
+    "permits_obtained_at_start_pct":
+        "Percentage of required permits obtained prior to execution start.",
+
+    "authority_involvement_level":
+        "Highest authority level involved in permitting, categorised as local, regional, or national.",
+
+    "permit_planned_lead_time_days":
+        "Planned lead time for the permit with the longest approval duration, expressed in days.",
+
+    "historical_weather_affected_days":
+        "Average number of days per year historically affected by adverse weather conditions at the project location.",
+
+    "weather_contingency_included":
+        "Indicates whether contingency measures for weather-related delays are included.",
+
+    "weather_sensitive_activities_share_pct":
+        "Percentage of planned activities sensitive to adverse weather conditions.",
+
+    "geotechnical_investigation_completed":
+        "Indicates whether a geotechnical investigation has been completed prior to execution.",
+
+    "contractor_safety_record_trir":
+        "Contractor safety performance indicator, such as Total Recordable Incident Rate (TRIR).",
+
+    "safety_management_plan_in_place":
+        "Indicates whether a formal safety management plan has been established prior to execution.",
+
+    "safety_certification_requirement":
+        "Indicates whether required VCA certification is required.",
+
+    "high_risk_activities_identified_count":
+        "Number of high-risk activities identified prior to execution.",
+
+    "safety_training_hours_required":
+        "Number of safety training hours required per worker.",
+
+    "inflation_forecast_pct":
+        "Inflation rate assumed at project start, expressed as a percentage.",
+
+    "price_escalation_clauses_included":
+        "Indicates whether contractual price escalation clauses are included.",
+
+    "pricing_mechanism":
+        "Pricing mechanism applied, categorised as fixed or adjustable (cost-plus).",
+
+    "contract_value_subject_to_indexation_pct":
+        "Percentage of total contract value subject to price indexation.",
+
+    "approvals_pending_count":
+        "Number of regulatory or administrative approvals pending at execution start.",
+
+    "compliance_deliverables_required_count":
+        "Number of compliance-related deliverables required during execution.",
+
+    "urban_context":
+        "Categorisation of project location as rural, suburban, or dense urban.",
+
+    "external_stakeholders_count":
+        "Number of external stakeholders involved in the project.",
+
+    "outstanding_stakeholder_objections_count":
+        "Number of unresolved objections raised by stakeholders at execution start.",
+
+    "traffic_management_plan":
+        "Indicates whether a traffic management plan is required.",
+
+    "stakeholder_engagement_plan_in_place":
+        "Indicates whether a stakeholder engagement plan has been established.",
+
+    "cost_contingency_included_pct":
+        "Percentage of cost contingency included in the project cost estimate.",
+
+    "benchmarking_against_similar_projects_performed":
+        "Indicates whether benchmark or reference projects were used in cost estimation.",
+
+    "planned_project_duration_days":
+        "Planned project duration expressed in calendar days."
+}
+
+var_units_english = {
+
+    # Cause 1
+    "schedule_level_of_detail_avg_activity_days": "Average activity duration (days)",
+
+    # Cause 2
+    "project_controls_plan_in_place": "Yes / No",
+    "roles_responsibilities_defined_raci": "Yes / No",
+    "site_logistics_plan_completed": "Yes / No",
+    "quality_management_plan_in_place_qmp": "Yes / No",
+
+    # Cause 3
+    "scope_definition_completeness_pct": "% WBS items fully specified",
+    "provisional_sums_pct_contract_value": "% of total contract value",
+    "change_control_procedure_defined": "Yes / No",
+
+    # Cause 4
+    "approval_layers_count": "Count",
+    "approval_responsibility_allocation": "Owner / Consultant / Joint",
+
+    # Cause 5
+    "clash_detection_performed_if_bim": "Yes / No",
+
+    # Cause 6
+    "design_schedule_baseline_approved": "Yes / No",
+    "percentage_design_complete_at_award_pct": "%",
+    "outstanding_design_packages_at_execution_start_count": "Count",
+
+    # Cause 7
+    "lead_designer_experience_years": "Years",
+    "similar_projects_designed_count": "Count",
+    "design_team_size_fte": "FTE",
+    "bim_capability": "Yes / No",
+
+    # Cause 8
+    "financial_prequalification_score_0_100": "Score (0–100)",
+    "contract_value_vs_annual_turnover_pct": "%",
+    "proof_of_financing_submitted": "Yes / No",
+
+    # Cause 9
+    "contractual_payment_terms_days": "Days",
+    "payment_security_instrument_included": "Yes / No",
+    "owner_financial_reliability": "Low / Medium / High",
+
+    # Cause 10
+    "contractual_decision_time_days": "Days",
+    "escalation_path_defined": "Yes / No",
+
+    # Cause 11
+    "owner_involvement": "Low / Medium / High",
+    "change_initiation_rights": "Owner / Joint / Contractor",
+
+    # Cause 12
+    "land_acquisition_right_of_way_resolved": "Yes / No",
+    "unresolved_site_access_constraints": "Yes / No",
+
+    # Cause 13
+    "contractor_experience_years": "Years",
+    "similar_projects_completed_count": "Count",
+    "technical_tender_score_0_100": "Score (0–100)",
+
+    # Cause 14
+    "method_statement_completeness": "%",
+    "share_first_time_methods_pct": "%",
+
+    # Cause 15
+    "subcontracting_share_pct": "%",
+    "number_of_subcontractors_count": "Count",
+    "critical_package_subcontractor_awarded_pre_start_pct": "%",
+
+    # Cause 16
+    "inspection_test_plan_defined_itp": "Yes / No",
+    "complexity_of_construction_scope_major_packages_wbs_count": "Count (major packages)",
+
+    # Cause 17
+    "meeting_frequency_meetings_per_month_count": "Count (meetings/month)",
+    "information_management": "Yes / No",
+    "number_of_key_stakeholders_count": "Count",
+
+    # Cause 18
+    "imported_material_dependency_pct": "%",
+    "critical_materials_identified_count": "Count",
+    "critical_materials_lead_time_gt_8_weeks_count": "Count",
+    "single_source_critical_materials_count": "Count",
+
+    # Cause 19
+    "planned_procurement_lead_time_days": "Days",
+    "critical_materials_ordered_pre_start_pct": "%",
+    "supplier_reliability_pct_on_time_deliveries": "% on-time deliveries",
+
+    # Cause 20
+    "supplier_iso_9001_certified": "Yes / No",
+
+    # Cause 21
+    "equipment_availability_confirmed_pct_critical_equipment": "% of critical equipment",
+    "equipment_ownership": "Owned / Rented / Mixed",
+    "avg_equipment_age_years": "Years",
+
+    # Cause 22
+    "avg_operator_experience_years": "Years",
+
+    # Cause 23
+    "labour_availability_pct_planned_available_vs_required": "% planned available / required",
+    "dependency_on_scarce_trades_pct": "% of labour hours",
+    "use_of_agency_temporary_labour_pct": "% of labour hours",
+    "critical_trades_confirmed_pct": "% of critical trades",
+
+    # Cause 24
+    "overtime_shift_work_planned": "Yes / No",
+    "site_logistics_complexity": "Low / Medium / High",
+
+    # Cause 25
+    "share_of_certified_workers_pct": "%",
+    "planned_onboarding_training_days": "Days",
+    "avg_experience_of_workforce_years": "Years",
+
+    # Cause 26
+    "contract_type": "UAV 2012 / UAV-GC 2025 / Other",
+    "collaborative_contracting_bouwteam": "Yes / No",
+    "incentive_mechanisms_included": "Yes / No",
+    "deviations_from_standard_terms": "Count",
+
+    # Cause 27
+    "ongoing_legal_disputes": "Yes / No",
+    "project_parties_prior_collaboration": "Yes / No",
+
+    # Cause 28
+    "permits_required_count": "Count",
+    "permits_obtained_at_start_pct": "%",
+    "authority_involvement_level": "Local / Regional / National",
+    "permit_planned_lead_time_days": "Days",
+
+    # Cause 29
+    "historical_weather_affected_days": "Days per year",
+    "weather_contingency_included": "Yes / No",
+    "weather_sensitive_activities_share_pct": "%",
+
+    # Cause 30
+    "geotechnical_investigation_completed": "Yes / No",
+    "unresolved_utilities_present": "Yes / No",
+
+    # Cause 31
+    "contractor_safety_record_trir": "TRIR",
+    "safety_management_plan_in_place": "Yes / No",
+    "safety_certification_requirement": "Yes / No",
+    "high_risk_activities_identified_count": "Count",
+    "safety_training_hours_required": "Hours per person",
+
+    # Cause 32
+    "inflation_forecast_pct": "%",
+    "price_escalation_clauses_included": "Yes / No",
+    "pricing_mechanism": "Fixed / Adjustable (cost-plus)",
+    "contract_value_subject_to_indexation_pct": "%",
+
+    # Cause 33
+    "approvals_pending_count": "Count",
+    "compliance_deliverables_required_count": "Count",
+
+    # Cause 34
+    "urban_context": "Rural / Suburban / Dense urban",
+    "external_stakeholders_count": "Count",
+    "outstanding_stakeholder_objections_count": "Count",
+    "traffic_management_plan": "Yes / No",
+    "stakeholder_engagement_plan_in_place": "Yes / No",
+
+    # Cause 35
+    "cost_contingency_included_pct": "%",
+    "benchmarking_against_similar_projects_performed": "Yes / No"
+}
+
+group_labels_english = {
+    "planning_control": "Planning & Control",
+    "design_readiness_quality": "Design Readiness & Quality",
+    "scope_change_management": "Scope & Change Management",
+    "owner_governance": "Owner & Governance",
+    "contract_commercial_structure": "Contract & Commercial Structure",
+    "contractor_supply_chain_capability": "Contractor & Supply Chain Capability",
+    "labour_productivity": "Labour & Productivity",
+    "site_external_conditions": "Site & External Conditions",
+    "safety_rework": "Safety & Rework",
+    "context": "Context"
+}
+
+def get_var_labels(language: str):
+    if language == "en":
+        return var_labels_english
+    return var_labels_dutch
+
+def get_var_descriptions(language: str):
+    if language == "en":
+        return var_descriptions_english
+    return var_descriptions_dutch
+
+def get_var_units(language: str):
+    if language == "en":
+        return var_units_english
+    return var_units_dutch
+
+def get_group_labels(language: str):
+    if language == "en":
+        return group_labels_english
+    return group_labels_dutch
