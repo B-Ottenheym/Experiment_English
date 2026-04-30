@@ -16,8 +16,6 @@ from experiment_config import CONDITIONS, COND_LABELS_EN, QUALTRICS_BASE_URL, SC
 def _init_participant_state():
     if "pid" not in st.session_state: #participant id
         st.session_state.pid = str(uuid.uuid4())
-    if "scenario_id" not in st.session_state:
-        st.session_state.scenario_id = SCENARIOS[0].scenario_id
     if "exp_step" not in st.session_state:
         st.session_state.exp_step = 0
     if "language" not in st.session_state:
