@@ -249,7 +249,18 @@ from the experiment at any time without providing a reason.
 
     consent = st.checkbox(consent_label)
 
+    if language == "nl":
+        back_label = "Terug naar taalkeuze"
+        next_label = "Volgende"
+    else:
+        back_label = "Back to language selection"
+        next_label = "Next"
+
     col1, col2 = st.columns([1, 1])
+    
+    with col1:
+        st.button(back_label, on_click=lambda: st.session_state.update({"exp_step": 0}))
+
     with col2:
         st.button(next_label, disabled=not consent, on_click=_next)
 
