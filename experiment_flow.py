@@ -341,7 +341,8 @@ def step_2_assignment():
                 """
                 if language == "nl"
                 else
-                """**In this version of the system, the prediction is explained using rules.**
+                """
+                **In this version of the system, the prediction is explained using rules.**
 
                 These rules describe combinations of project characteristics for which the prediction is valid. 
                 The explanation provides insight into which conditions were decisive for the outcome.
