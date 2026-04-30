@@ -26,7 +26,6 @@ def _get_scenario():
     for s in SCENARIOS:
         if s.scenario_id == sid:
             return s
-    return SCENARIOS[0]
 
 def assign_condition_if_needed():
     if "condition" not in st.session_state:
