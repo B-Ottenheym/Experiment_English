@@ -190,9 +190,9 @@ def step_0_language():
     st.session_state.language = choice[1]
 
     if st.session_state.language == "nl":
-        st.session_state.scenario_id = "S1_NL"
+        st.session_state.scenario_id = "S1"
     else:
-        st.session_state.scenario_id = "S1_EN"
+        st.session_state.scenario_id = "S1_en"
 
     st.button("Continue / Doorgaan", on_click=_next)
 
