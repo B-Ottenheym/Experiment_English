@@ -26,6 +26,7 @@ def _get_scenario():
     for s in SCENARIOS:
         if s.scenario_id == sid:
             return s
+    return SCENARIOS[0]
 
 def assign_condition_if_needed():
     if "condition" not in st.session_state:
@@ -924,7 +925,7 @@ The input values are fixed for this study and cannot be adjusted.
             st.info("In this version of the system, no explanation is provided for the prediction.")
 
         elif cond == "SHAP":
-            p = xai_path(cond)
+            p = xai_path(cond, language="en")
             if p.exists():
                 col_spacer_left, col_img, col_spacer_right = st.columns([1, 8, 1])
                 with col_img:
@@ -933,14 +934,14 @@ The input values are fixed for this study and cannot be adjusted.
                 st.warning(f"Image not found: {p}")
     
         elif cond == "Surrogaatmodel (beslisboom)":
-            p = xai_path(cond)
+            p = xai_path(cond, language="en")
             if p.exists():
                 st.image(str(p), use_container_width=True)  
             else:
                 st.warning(f"Image not found: {p}")
 
         elif cond == "Regels":
-            p = xai_path(cond)
+            p = xai_path(cond, language="en")
             if p.exists():
                 text = html.unescape(p.read_text(encoding="utf-8"))
 
@@ -954,7 +955,7 @@ The input values are fixed for this study and cannot be adjusted.
                 st.warning(f"Rules not found: {p}")
 
         elif cond == "Tegenfeitelijk":
-            p = xai_path(cond)
+            p = xai_path(cond, language="en")
             if p.exists():
                 df = pd.read_csv(p, sep=";")
 
