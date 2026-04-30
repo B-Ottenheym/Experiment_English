@@ -298,16 +298,6 @@ def step_2_assignment():
         st.info(f"{assigned_label}: **{cond}**")
     else:
         st.info(f"{assigned_label}: **{COND_LABELS_EN[cond]}**")
-
-    if cond == "Black box":
-        st.info(
-            """
-**In deze versie van het systeem wordt alleen de voorspelling getoond.**
-
-Er wordt geen aanvullende uitleg gegeven over hoe het systeem tot deze voorspelling
-is gekomen.
-"""
-        )
  
     if cond == "Black box":
         st.info("""
