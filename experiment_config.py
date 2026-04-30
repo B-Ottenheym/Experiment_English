@@ -62,14 +62,17 @@ SCENARIOS = [
 
 XAI_DIR = Path("XAI")
 
-def xai_path(condition: str) -> Path:
+def xai_path(condition: str, language: str = "nl") -> Path:
     base = XAI_DIR
+
+    suffix = "_en" if language == "en" else ""
+
     if condition == "SHAP":
-        return base / "shap.png"
+        return base / f"shap{suffix}.png"
     if condition == "Regels":
-        return base / "rules.txt"
+        return base / f"rules{suffix}.txt"
     if condition == "Tegenfeitelijk":
-        return base / "cf.csv"
+        return base / f"cf{suffix}.csv"
     if condition == "Surrogaatmodel (beslisboom)":
-        return base / "surrogate.png"
-    return base / ""  # black_box
+        return base / f"surrogate{suffix}.png"
+    return base / ""
