@@ -19,7 +19,7 @@ def _init_participant_state():
     if "scenario_id" not in st.session_state:
         st.session_state.scenario_id = SCENARIOS[0].scenario_id
     if "exp_step" not in st.session_state:
-        st.session_state.exp_step = 1
+        st.session_state.exp_step = 0
     if "language" not in st.session_state:
         st.session_state.language = DEFAULT_LANGUAGE
 
