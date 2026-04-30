@@ -51,7 +51,7 @@ SCENARIOS = [
         narrative_markdown=(
             """### Project scenario\n"""
             "You are involved as a project manager in a medium-sized utility project that is in the preparation phase, just before the start of the execution phase.\n\n"
-            "The project involves the construction of a multifunctional building in an urban environment. The client is a professional organization with multiple internal decision-making levels. The project has a fixed contract value and will be executed under UAV-GC 2025. Some of the work will be subcontracted to specialized subcontractors.\n\n" \
+            "The project involves the construction of a multifunctional building in an urban environment. The client is a professional organization with multiple internal decision-making levels. The project has a fixed contract value and will be executed under the UAV-GC 2025 contract form, a Dutch integrated design-build contracting standard. Some of the work will be subcontracted to specialized subcontractors.\n\n" \
             "You are using an AI-based decision-support system that, based on project characteristics, provides an estimate of the risk of project delay. Below you will see the entered project characteristics, followed by the prediction and corresponding explanation.\n\n"
 
         ),
