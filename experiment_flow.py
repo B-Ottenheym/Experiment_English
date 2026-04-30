@@ -11,7 +11,7 @@ from pathlib import Path
 import random
 import psycopg2
 from dictionaries import DEFAULT_LANGUAGE, var_groups, binary_vars, get_var_labels, get_var_descriptions, get_group_labels, get_var_units
-from experiment_config import (CONDITIONS, QUALTRICS_BASE_URL, SCENARIOS, xai_path, XAI_DIR)
+from experiment_config import CONDITIONS, COND_LABELS_EN, QUALTRICS_BASE_URL, SCENARIOS, xai_path, XAI_DIR
 
 def _init_participant_state():
     if "pid" not in st.session_state: #participant id
@@ -182,6 +182,11 @@ def step_0_language():
 
     st.session_state.language = choice[1]
 
+    if st.session_state.language == "nl":
+        st.session_state.scenario_id = "S1_NL"
+    else:
+        st.session_state.scenario_id = "S1_EN"
+
     st.button("Continue / Doorgaan", on_click=_next)
 
 def step_1_consent():
@@ -269,7 +274,10 @@ def step_2_assignment():
         next_label = "Next"
         back_label = "Back"
 
-    st.info(f"{assigned_label}: **{cond}**")
+    if language == "nl":
+        st.info(f"{assigned_label}: **{cond}**")
+    else:
+        st.info(f"{assigned_label}: **{COND_LABELS_EN[cond]}**")
 
     if cond == "Black box":
         st.info(
@@ -375,7 +383,7 @@ is gekomen.
     with col2:
         st.button(next_label, on_click=_next)
 
-def step_3_scenario_old():
+def step_3_scenario_nl():
     language = st.session_state.language
     scenario = _get_scenario()
 
@@ -682,370 +690,303 @@ def step_3_scenario_old():
             on_click=_next
         )
 
-def step_3_scenario():
-    language = st.session_state.language
+def step_3_scenario_en():
     scenario = _get_scenario()
 
-    if language == "nl":
-        header_title = "Scenario en voorspelling"
-        features_title = "#### Projectkenmerken"
-        predict_text = "Voorspellen"
-        ai_output_title = "AI‑uitkomst"
-        explanation_title = "Uitleg"
-        back_label = "Terug"
-        next_label = "Doorgaan naar vragenlijst"
-        fixed_input_text = (
-            "Hieronder kunt u op **Voorspellen** klikken om de AI‑uitkomst en de bijbehorende uitleg te bekijken.\n\n"
-            "De invoerwaarden zijn vastgezet voor dit onderzoek en kunnen niet worden aangepast."
-        )
-        no_explanation_blackbox = "In deze versie van het systeem wordt geen uitleg bij de voorspelling gegeven."
-        rules_intro = "**Deze voorspelling wordt toegelicht met behulp van de volgende beslisregels:**"
-    else:
-        header_title = "Scenario and prediction"
-        features_title = "#### Project features"
-        predict_text = "Predict"
-        ai_output_title = "AI output"
-        explanation_title = "Explanation"
-        back_label = "Back"
-        next_label = "Continue to questionnaire"
-        fixed_input_text = (
-            "Below, you can click **Predict** to view the AI output and the accompanying explanation.\n\n"
-            "The input values are fixed for this study and cannot be adjusted."
-        )
-        no_explanation_blackbox = "In this version of the system, no explanation is provided with the prediction."
-        rules_intro = "**This prediction is explained using the following decision rules:**"
-
-    st.header(header_title)
+    st.header("Scenario and prediction")
     st.markdown(scenario.narrative_markdown)
 
     if scenario.image_path:
         try:
             st.image(scenario.image_path, use_container_width=True)
         except Exception:
-            pass
+            st.warning("The scenario image could not be loaded.")
 
-    st.markdown(features_title)
+    st.markdown("#### Project features")
+
     df = _features_to_table(scenario.features)
-    st.dataframe(df, use_container_width=True, hide_index=True)
+    st.dataframe(
+        df,
+        use_container_width=True,
+        hide_index=True,
+        column_config={
+            "Category": st.column_config.TextColumn("Category", width=240),
+            "Variable": st.column_config.TextColumn("Variable", width=460),
+            "Value": st.column_config.TextColumn("Value", width=100),
+            "Description": st.column_config.TextColumn("Description", width=950),
+        },
+    )
 
     st.markdown("---")
-    st.markdown(fixed_input_text)
+    st.markdown(
+        """
+Below you can click **Predict** to view the AI output and the accompanying explanation.
+The input values are fixed for this study and cannot be adjusted.
+"""
+    )
 
     if "show_results" not in st.session_state:
         st.session_state.show_results = False
 
-    if st.button(predict_text, key="step3_predict"):
+    if st.button("Predict", key="step3_predict",):
         st.session_state.show_results = True
-
     st.markdown("---")
-
+    
     if st.session_state.show_results:
-        st.subheader(ai_output_title)
+        st.subheader("AI‑output")
 
-        prediction_path = XAI_DIR / "prediction.txt"
+        prediction_path = XAI_DIR / "prediction_en.txt"
+
         if prediction_path.exists():
             text = html.unescape(prediction_path.read_text(encoding="utf-8"))
+
             for line in text.splitlines():
+                line = line.strip()
+                if not line:
+                    st.markdown("")
+                    continue
+
                 if ":" in line:
                     left, right = line.split(":", 1)
                     st.markdown(f"{left}: **{right.strip()}**")
                 else:
                     st.markdown(f"**{line}**")
-
-            if language == "nl":
-                st.markdown(
-                    "*Deze voorspelling geeft de **verwachte impact van het risico op projectvertraging** weer. "
-                    "Het AI‑model combineert de kans op vertraging met de verwachte ernst ervan ten opzichte "
-                    "van de geplande projectduur.*"
-                )
-            else:
-                st.markdown(
+            st.markdown(
                     "*This prediction represents the **expected impact of the risk of project delay**. "
                     "The AI model combines the probability of delay with its expected severity relative to "
                     "the planned project duration.*"
                 )
+        else:
+            st.warning(f"Prediction file not found: {prediction_path}")
 
         st.markdown("---")
-
+        
         cond = st.session_state.condition
-        st.subheader(f"{explanation_title} ({cond})")
+        st.subheader(f"Explanation ({COND_LABELS_EN[cond]})")
 
-        if cond == "SHAP":
-            if language == "nl":
-                text = """
-<div style="background-color:#fff8f4; border:2px solid #ddd; padding:16px; margin-bottom:16px;">
-<div style="font-weight:600; font-size:17px; margin-bottom:8px;">
-Hoe moet ik deze uitleg interpreteren?
-</div>
-<div style="font-size:15px; line-height:1.5;">
-Deze grafiek laat zien <strong>welke projectkenmerken volgens het model het meest bijdragen</strong>
-aan de voorspelling voor <strong>dit specifieke project</strong>.
-<br><br>
-• Balken die omhoog wijzen vergroten het voorspelde vertragingsrisico.<br>
-• Balken die omlaag wijzen verkleinen het voorspelde vertragingsrisico.<br>
-• Hoe langer de balk, hoe groter de invloed van dat kenmerk volgens het model.
-<br><br>
-Deze uitleg helpt om te begrijpen <strong>waarom het model tot deze voorspelling komt</strong>,
-maar zegt niets over welke kenmerken in alle projecten belangrijk zijn.
-</div>
-</div>
-<div style="background-color:#fff8f4; border:1px solid #ddd; padding:16px;">
-<div style="font-weight:600; font-size:17px; margin-bottom:8px;">
-Hoe genereert het systeem deze uitleg?
-</div>
-<div style="font-size:15px; line-height:1.5;">
-Deze uitleg is gebaseerd op een methode die per project bekijkt
-hoeveel ieder projectkenmerk bijdraagt aan de uiteindelijke voorspelling.
-<br><br>
-Het model vergelijkt daarbij de voorspelling met en zonder specifieke kenmerken.
-Op basis van dit verschil wordt bepaald of een kenmerk de voorspelling verhoogt of verlaagt.
-<br><br>
-De uitleg is specifiek voor dit project en deze voorspelling.
-</div>
-</div>
-"""
-            else:
-                text = """
-<div style="background-color:#fff8f4; border:2px solid #ddd; padding:16px; margin-bottom:16px;">
-<div style="font-weight:600; font-size:17px; margin-bottom:8px;">
-How should I interpret this explanation?
-</div>
-<div style="font-size:15px; line-height:1.5;">
-This chart shows <strong>which project characteristics contribute the most according to the model</strong>
-to the prediction for <strong>this specific project</strong>.
-<br><br>
-• Bars pointing upward increase the predicted delay risk.<br>
-• Bars pointing downward decrease the predicted delay risk.<br>
-• The longer the bar, the greater the influence of that characteristic according to the model.
-<br><br>
-This explanation helps to understand <strong>why the model arrives at this prediction</strong>,
-but does not indicate which characteristics are important across all projects.
-</div>
-</div>
-<div style="background-color:#fff8f4; border:1px solid #ddd; padding:16px;">
-<div style="font-weight:600; font-size:17px; margin-bottom:8px;">
-How does the system generate this explanation?
-</div>
-<div style="font-size:15px; line-height:1.5;">
-This explanation is based on a method that examines, per project,
-how much each project characteristic contributes to the final prediction.
-<br><br>
-The model compares the prediction with and without specific characteristics.
-Based on this difference, it determines whether a characteristic increases or decreases the prediction.
-<br><br>
-The explanation is specific to this project and this prediction.
-</div>
-</div>
-"""
-            st.markdown(text, unsafe_allow_html=True)
+        if cond == "SHAP":            
+            st.markdown(
+                """
+                    <div style="background-color:#fff8f4; border:2px solid #ddd; padding:16px; margin-bottom:16px;">
+                    <div style="font-weight:600; font-size:17px; margin-bottom:8px;">
+                    How should I interpret this explanation?
+                    </div>
+                    <div style="font-size:15px; line-height:1.5;">
+                    This chart shows <strong>which project characteristics contribute the most according to the model</strong>
+                    to the prediction for <strong>this specific project</strong>.
+                    <br><br>
+                    &#8226; Bars pointing upward increase the predicted delay risk.<br>
+                    &#8226; Bars pointing downward decrease the predicted delay risk.<br>
+                    &#8226; The longer the bar, the greater the influence of that characteristic according to the model.
+                    <br><br>
+                    This explanation helps to understand <strong>why the model arrives at this prediction</strong>,
+                    but does not indicate which characteristics are important across all projects.
+                    </div>
+                    </div>
+                    <div style="background-color:#fff8f4; border:1px solid #ddd; padding:16px;">
+                    <div style="font-weight:600; font-size:17px; margin-bottom:8px;">
+                    How does the system generate this explanation?
+                    </div>
+                    <div style="font-size:15px; line-height:1.5;">
+                    This explanation is based on a method that examines, per project,
+                    how much each project characteristic contributes to the final prediction.
+                    <br><br>
+                    The model compares the prediction with and without specific characteristics.
+                    Based on this difference, it determines whether a characteristic increases or decreases the prediction.
+                    <br><br>
+                    The explanation is specific to this project and this prediction.
+                    </div>
+                    </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+            st.markdown("<div style='height:40px;'></div>", unsafe_allow_html=True)
 
         elif cond == "Regels":
-            if language == "nl":
-                text = """
-<div style="background-color:#fff8f4; border:2px solid #ddd; padding:16px; margin-bottom:16px;">
-<div style="font-weight:600; font-size:17px; margin-bottom:8px;">
-Hoe moet ik deze uitleg interpreteren?
-</div>
-<div style="font-size:15px; line-height:1.5;">
-Deze regel laat zien <strong>onder welke combinatie van projectkenmerken</strong>
-het AI‑systeem tot een vergelijkbare voorspelling komt als bij dit project.
-<br><br>
-Als aan de genoemde voorwaarden wordt voldaan,
-hoort daar volgens het model deze inschatting van de verwachte vertraging bij.
-<br><br>
-Zie deze regel als:
-<em>de belangrijkste kenmerken waarop het model zich in dit geval baseert.</em>
-</div>
-</div>
-<div style="background-color:#fff8f4; border:1px solid #ddd; padding:16px;">
-<div style="font-weight:600; font-size:17px; margin-bottom:8px;">
-Hoe genereert het systeem deze uitleg?
-</div>
-<div style="font-size:15px; line-height:1.5;">
-Deze uitleg is afgeleid van het oorspronkelijke AI‑model met behulp van
-een eenvoudiger model dat beter uitlegbaar is.
-<br><br>
-Dit vereenvoudigde model probeert het gedrag van het AI‑model
-zo goed mogelijk te benaderen in de buurt van deze voorspelling.
-<br><br>
-De regel is daardoor een benadering en geen exacte weergave
-van alle interne berekeningen van het oorspronkelijke model.
-</div>
-</div>
-"""
-            else:
-                text = """
-<div style="background-color:#fff8f4; border:2px solid #ddd; padding:16px; margin-bottom:16px;">
-<div style="font-weight:600; font-size:17px; margin-bottom:8px;">
-How should I interpret this explanation?
-</div>
-<div style="font-size:15px; line-height:1.5;">
-This rule shows <strong>under which combination of project characteristics</strong>
-the AI system arrives at a prediction similar to that of this project.
-<br><br>
-If the stated conditions are met,
-the model associates them with this estimated level of expected delay.
-<br><br>
-See this rule as:
-<em>the key characteristics on which the model bases its reasoning in this case.</em>
-</div>
-</div>
-<div style="background-color:#fff8f4; border:1px solid #ddd; padding:16px;">
-<div style="font-weight:600; font-size:17px; margin-bottom:8px;">
-How does the system generate this explanation?
-</div>
-<div style="font-size:15px; line-height:1.5;">
-This explanation is derived from the original AI model using
-a simpler model that is easier to interpret.
-<br><br>
-This simplified model attempts to approximate the behavior of the AI model
-as closely as possible in the vicinity of this prediction.
-<br><br>
-As a result, the rule is an approximation and not an exact representation
-of all internal calculations of the original model.
-</div>
-</div>
-"""
-            st.markdown(text, unsafe_allow_html=True)
+            st.markdown(
+                """
+                    <div style="background-color:#fff8f4; border:2px solid #ddd; padding:16px; margin-bottom:16px;">
+                    <div style="font-weight:600; font-size:17px; margin-bottom:8px;">
+                    How should I interpret this explanation?
+                    </div>
+                    <div style="font-size:15px; line-height:1.5;">
+                    This rule shows <strong>under which combination of project characteristics</strong>
+                    the AI system arrives at a prediction similar to that of this project.
+                    <br><br>
+                    If the stated conditions are met,
+                    the model associates them with this estimated level of expected delay.
+                    <br><br>
+                    See this rule as:
+                    <em>the key characteristics on which the model bases its reasoning in this case.</em>
+                    </div>
+                    </div>
+                    <div style="background-color:#fff8f4; border:1px solid #ddd; padding:16px;">
+                    <div style="font-weight:600; font-size:17px; margin-bottom:8px;">
+                    How does the system generate this explanation?
+                    </div>
+                    <div style="font-size:15px; line-height:1.5;">
+                    This explanation is derived from the original AI model using
+                    a simpler model that is easier to interpret.
+                    <br><br>
+                    This simplified model attempts to approximate the behavior of the AI model
+                    as closely as possible in the vicinity of this prediction.
+                    <br><br>
+                    As a result, the rule is an approximation and not an exact representation
+                    of all internal calculations of the original model.
+                    </div>
+                    </div>
+                """,
+                unsafe_allow_html=True,
+            )
+            st.markdown("<div style='height:40px;'></div>", unsafe_allow_html=True)
+
 
         elif cond == "Tegenfeitelijk":
-            if language == "nl":
-                text = """
-<div style="background-color:#fff8f4; border:2px solid #ddd; padding:16px; margin-bottom:16px;">
-<div style="font-weight:600; font-size:17px; margin-bottom:8px;">
-Hoe moet ik deze uitleg interpreteren?
-</div>
-<div style="font-size:15px; line-height:1.5;">
-Deze tabel vergelijkt het oorspronkelijke project met een alternatief scenario
-dat volgens het model leidt tot een <strong>lager vertragingsrisico</strong>.
-<br><br>
-• <strong>Origineel</strong>: de waarde uit het projectscenario dat u zojuist heeft gezien.<br>
-• <strong>Tegenfeitelijk</strong>: een alternatief scenario met aangepaste waarden.<br>
-• <strong>Verschil</strong>: het verschil tussen Tegenfeitelijk en Origineel.
-<br><br>
-Dit is een modelmatige wat‑als uitleg en geen garantie dat deze veranderingen
-haalbaar of wenselijk zijn in de praktijk.
-</div>
-</div>
-<div style="background-color:#fff8f4; border:1px solid #ddd; padding:16px;">
-<div style="font-weight:600; font-size:17px; margin-bottom:8px;">
-Hoe genereert het systeem deze uitleg?
-</div>
-<div style="font-size:15px; line-height:1.5;">
-Het systeem zoekt naar een alternatief scenario dat sterk lijkt op het huidige project,
-maar volgens het model duidelijk gunstiger uitpakt.
-<br><br>
-Daarbij worden zo min mogelijk kenmerken aangepast, met focus op kenmerken
-die volgens het model invloed hebben op de voorspelling.
-</div>
-</div>
-"""
-            else:
-                text = """
-<div style="background-color:#fff8f4; border:2px solid #ddd; padding:16px; margin-bottom:16px;">
-<div style="font-weight:600; font-size:17px; margin-bottom:8px;">
-How should I interpret this explanation?
-</div>
-<div style="font-size:15px; line-height:1.5;">
-This table compares the original project with an alternative scenario
-that leads to a <strong>lower predicted delay risk</strong> according to the model.
-<br><br>
-• <strong>Original</strong>: the value from the project scenario you just saw.<br>
-• <strong>Counterfactual</strong>: an alternative scenario with adjusted values.<br>
-• <strong>Difference</strong>: the difference between Counterfactual and Original.
-<br><br>
-This is a model‑based what‑if explanation and does not guarantee that such changes
-are feasible or desirable in practice.
-</div>
-</div>
-<div style="background-color:#fff8f4; border:1px solid #ddd; padding:16px;">
-<div style="font-weight:600; font-size:17px; margin-bottom:8px;">
-How does the system generate this explanation?
-</div>
-<div style="font-size:15px; line-height:1.5;">
-The system searches for an alternative scenario that closely resembles
-the current project but results in a more favorable prediction.
-<br><br>
-The goal is to change as few characteristics as possible, focusing on those
-that the model considers influential.
-</div>
-</div>
-"""
-            st.markdown(text, unsafe_allow_html=True)
+            st.markdown(
+                """
+                    <div style="background-color:#fff8f4; border:2px solid #ddd; padding:16px; margin-bottom:16px;">
+                    <div style="font-weight:600; font-size:17px; margin-bottom:8px;">
+                    How should I interpret this explanation?
+                    </div>
+                    <div style="font-size:15px; line-height:1.5;">
+                    This table compares the original project with an alternative scenario
+                    that leads to a <strong>lower predicted delay risk</strong> according to the model.
+                    <br><br>
+                    &#8226; <strong>Original</strong>: the value from the project scenario you just saw.<br>
+                    &#8226; <strong>Counterfactual</strong>: an alternative scenario with adjusted values.<br>
+                    &#8226; <strong>Difference</strong>: the difference between Counterfactual and Original.
+                    <br><br>
+                    This is a model‑based what‑if explanation and does not guarantee that such changes
+                    are feasible or desirable in practice.
+                    </div>
+                    </div>
+                    <div style="background-color:#fff8f4; border:1px solid #ddd; padding:16px;">
+                    <div style="font-weight:600; font-size:17px; margin-bottom:8px;">
+                    How does the system generate this explanation?
+                    </div>
+                    <div style="font-size:15px; line-height:1.5;">
+                    The system searches for an alternative scenario that closely resembles
+                    the current project but results in a more favorable prediction.
+                    <br><br>
+                    The goal is to change as few characteristics as possible, focusing on those
+                    that the model considers influential.
+                    </div>
+                    </div>
+                """,
+                unsafe_allow_html=True,
+            )
+        
+            st.markdown("<div style='height:40px;'></div>", unsafe_allow_html=True)
 
         elif cond == "Surrogaatmodel (beslisboom)":
-            if language == "nl":
-                text = """
-<div style="background-color:#fff8f4; border:2px solid #ddd; padding:16px; margin-bottom:16px;">
-<div style="font-weight:600; font-size:17px; margin-bottom:8px;">
-Hoe moet ik deze uitleg interpreteren?
-</div>
-<div style="font-size:15px; line-height:1.5;">
-Deze beslisboom geeft een <strong>vereenvoudigd overzicht</strong>
-van hoe het AI‑systeem globaal tot een voorspelling komt.
-<br><br>
-Zie dit als:
-<em>een globale indruk van het redeneerproces van het model</em>,
-niet als een exacte beschrijving van iedere voorspelling.
-</div>
-</div>
-<div style="background-color:#fff8f4; border:1px solid #ddd; padding:16px;">
-<div style="font-weight:600; font-size:17px; margin-bottom:8px;">
-Hoe genereert het systeem deze uitleg?
-</div>
-<div style="font-size:15px; line-height:1.5;">
-Deze beslisboom bootst het gedrag van het oorspronkelijke AI‑model na
-met een eenvoudiger en beter uitlegbaar model.
-<br><br>
-Door deze vereenvoudiging ontstaat meer overzicht,
-maar gaat ook detail en nauwkeurigheid verloren.
-</div>
-</div>
-"""
-            else:
-                text = """
-<div style="background-color:#fff8f4; border:2px solid #ddd; padding:16px; margin-bottom:16px;">
-<div style="font-weight:600; font-size:17px; margin-bottom:8px;">
-How should I interpret this explanation?
-</div>
-<div style="font-size:15px; line-height:1.5;">
-This decision tree provides a <strong>simplified overview</strong>
-of how the AI system generally arrives at a prediction.
-<br><br>
-See this as:
-<em>a high‑level impression of the model’s reasoning</em>,
-not an exact description of every individual prediction.
-</div>
-</div>
-<div style="background-color:#fff8f4; border:1px solid #ddd; padding:16px;">
-<div style="font-weight:600; font-size:17px; margin-bottom:8px;">
-How does the system generate this explanation?
-</div>
-<div style="font-size:15px; line-height:1.5;">
-This decision tree approximates the behavior of the original AI model
-using a simpler and more interpretable structure.
-<br><br>
-This simplification improves readability
-but omits some detail and precision.
-</div>
-</div>
-"""
-            st.markdown(text, unsafe_allow_html=True)
+            st.markdown(
+                """
+                    <div style="background-color:#fff8f4; border:2px solid #ddd; padding:16px; margin-bottom:16px;">
+                    <div style="font-weight:600; font-size:17px; margin-bottom:8px;">
+                    How should I interpret this explanation?
+                    </div>
+                    <div style="font-size:15px; line-height:1.5;">
+                    This decision tree provides a <strong>simplified overview</strong>
+                    of how the AI system generally arrives at a prediction.
+                    <br><br>
+                    See this as:
+                    <em>a high‑level impression of the model’s reasoning</em>,
+                    not an exact description of every individual prediction.
+                    </div>
+                    </div>
+                    <div style="background-color:#fff8f4; border:1px solid #ddd; padding:16px;">
+                    <div style="font-weight:600; font-size:17px; margin-bottom:8px;">
+                    How does the system generate this explanation?
+                    </div>
+                    <div style="font-size:15px; line-height:1.5;">
+                    This decision tree approximates the behavior of the original AI model
+                    using a simpler and more interpretable structure.
+                    <br><br>
+                    This simplification improves readability
+                    but omits some detail and precision.
+                    </div>
+                    </div>
+                """,
+                unsafe_allow_html=True,
+            )
+        
+            st.markdown("<div style='height:40px;'></div>", unsafe_allow_html=True)
 
-        elif cond == "Black box":
-            st.info(no_explanation_blackbox)
+        if cond == "Black box":
+            st.info("In this version of the system, no explanation is provided for the prediction.")
+
+        elif cond == "SHAP":
+            p = xai_path(cond)
+            if p.exists():
+                col_spacer_left, col_img, col_spacer_right = st.columns([1, 8, 1])
+                with col_img:
+                    st.image(str(p), use_container_width=True)
+            else:
+                st.warning(f"Image not found: {p}")
+    
+        elif cond == "Surrogaatmodel (beslisboom)":
+            p = xai_path(cond)
+            if p.exists():
+                st.image(str(p), use_container_width=True)  
+            else:
+                st.warning(f"Image not found: {p}")
+
+        elif cond == "Regels":
+            p = xai_path(cond)
+            if p.exists():
+                text = html.unescape(p.read_text(encoding="utf-8"))
+
+                lines = [l.strip() for l in text.splitlines() if l.strip()]
+
+                st.markdown("**These predictions are explained using the following decision rules:**")
+                st.markdown(
+                    "\n".join(f"- {line}" for line in lines[1:])
+                )
+            else:
+                st.warning(f"Rules not found: {p}")
+
+        elif cond == "Tegenfeitelijk":
+            p = xai_path(cond)
+            if p.exists():
+                df = pd.read_csv(p, sep=";")
+
+                for col in ["Original", "Counterfactual", "Difference"]:
+                    df[col] = df[col].astype(str)
+
+                last_idx = df.index[-1]
+
+                def bold_last_row(row):
+                    if row.name == last_idx:
+                        return ["font-weight: 600;"] * len(row)
+                    return [""] * len(row)
+        
+                styler = df.style.apply(bold_last_row, axis=1)
+
+                st.dataframe(
+                    styler,
+                    use_container_width=True,
+                    hide_index=True
+                )
+            else:
+                st.warning(f"Table not found: {p}")
 
     st.markdown("---")
     col1, col2 = st.columns([1, 1])
     with col1:
-        st.button(back_label, key="step3_back", on_click=_back)
+        st.button("Back", key="step3_back", on_click=_back)
     with col2:
         st.button(
-            next_label,
-            key="step3_next",
+            "Continue to questionnaire", key="step3_next",
             disabled=not st.session_state.get("show_results", False),
-            on_click=_next,
+            on_click=_next
         )
+
+def step_3_scenario():
+    if st.session_state.language == "nl":
+        step_3_scenario_nl()
+    else:
+        step_3_scenario_en()
 
 def step_4_redirect():
     language = st.session_state.language
