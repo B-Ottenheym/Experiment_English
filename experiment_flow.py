@@ -959,6 +959,10 @@ The input values are fixed for this study and cannot be adjusted.
             if p.exists():
                 df = pd.read_csv(p, sep=";")
 
+                df = df.applymap(
+                    lambda x: x.replace(",", ".") if isinstance(x, str) else x
+                    )
+
                 for col in ["Original", "Counterfactual", "Difference"]:
                     df[col] = df[col].astype(str)
 
