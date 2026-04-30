@@ -195,7 +195,8 @@ def step_0_language():
     else:
         st.session_state.scenario_id = "S1_en"
 
-    st.button("Continue / Doorgaan", on_click=_next)
+    button_label = "Doorgaan" if st.session_state.language == "nl" else "Continue"
+    st.button(button_label, on_click=_next)
 
 def step_1_consent():
     language = st.session_state.language
