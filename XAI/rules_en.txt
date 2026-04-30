@@ -1,0 +1,5 @@
+This project is predicted to be delayed based on the following decision rules:
+
+Information management in accordance with ISO 19650 = No
+Permits already obtained < 55%
+Share of weather-sensitive activities ≥ 20%
