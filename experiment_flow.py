@@ -116,6 +116,13 @@ def _features_to_table(features: dict) -> pd.DataFrame:
 
     yes_no = ("Yes", "No") if language == "en" else ("Ja", "Nee")
 
+    col_category = "Category" if language == "en" else "Categorie"
+    col_variable = "Variable" if language == "en" else "Variabele"
+    col_value = "Value" if language == "en" else "Waarde"
+    col_description = "Description" if language == "en" else "Beschrijving"
+
+    other_label = "Other" if language == "en" else "Overig"
+
     rows = []
     grouped_vars = {v for vs in var_groups.values() for v in vs}
 
@@ -135,12 +142,14 @@ def _features_to_table(features: dict) -> pd.DataFrame:
             if isinstance(value, (int, np.integer)) and v in binary_vars:
                 value = yes_no[0] if value == 1 else yes_no[1]
 
-            rows.append({
-                "Category": group_label if language == "en" else "Categorie",
-                "Variable": label if language == "en" else "Variabele",
-                "Value": value if language == "en" else "Waarde",
-                "Description": var_descriptions.get(v, "") if language == "en" else "Beschrijving",
-            })
+            rows.append(
+                {
+                    col_category: group_label,
+                    col_variable: label,
+                    col_value: value,
+                    col_description: var_descriptions.get(v, ""),
+                }
+            )
 
     for k, val in features.items():
         if k in grouped_vars:
@@ -151,20 +160,21 @@ def _features_to_table(features: dict) -> pd.DataFrame:
         if unit:
             label = f"{label} ({unit})"
 
-        rows.append({
-            "Category": "Other" if language == "en" else "Overig",
-            "Variable": label,
-            "Value": val,
-            "Description": var_descriptions.get(k, ""),
-        })
+        rows.append(
+            {
+                col_category: other_label,
+                col_variable: label,
+                col_value: val,
+                col_description: var_descriptions.get(k, ""),
+            }
+        )
 
     df = pd.DataFrame(rows)
 
-    #df["Categorie"] = df["Categorie"].where(
-    #    df["Categorie"].ne(df["Categorie"].shift()),
-    #    ""
-    #)
-    df.iloc[:, 0] = df.iloc[:, 0].where(df.iloc[:, 0].ne(df.iloc[:, 0].shift()), "")
+    df[col_category] = df[col_category].where(
+        df[col_category].ne(df[col_category].shift()),
+        ""
+    )
 
     return df
 
