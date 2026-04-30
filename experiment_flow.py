@@ -55,10 +55,8 @@ def _build_qualtrics_url():
     params = {
         "pid": st.session_state.pid,
         "cond": st.session_state.condition,
+        "lang": st.session_state.language,
     }
-
-    if st.session_state.get("language") == "en":
-        params["lang"] = "en"
 
     qs = urllib.parse.urlencode(params)
     if "?" in QUALTRICS_BASE_URL:
