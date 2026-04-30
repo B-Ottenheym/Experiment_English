@@ -384,7 +384,7 @@ is gekomen.
         st.button(next_label, on_click=_next)
 
 def step_3_scenario_nl():
-    language = st.session_state.language
+    st.session_state.language = "nl"
     scenario = _get_scenario()
 
     st.header("Scenario en voorspelling")
