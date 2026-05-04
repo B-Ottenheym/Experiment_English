@@ -2,7 +2,7 @@ name: Keep Streamlit app awake
 
 on:
   schedule:
-    - cron: "0 */9 * * *"
+    - cron: "*/15 * * * *"
   workflow_dispatch:
 
 permissions:
